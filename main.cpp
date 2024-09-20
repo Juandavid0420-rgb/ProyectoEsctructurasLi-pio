@@ -49,9 +49,15 @@ void MostrarComandosDisponibles() {
 }
 
 int main() {
-    Interfaz interfaz;
+    vector<Objeto> objetos;
+    vector<Envolvente> envolventes;
+    Envolvente envolventeGlobal;
+    // Se crea la interfaz entre el usuario y el programa
+    Interfaz interfaz(objetos, envolventes, envolventeGlobal);
+  
     InicializarDescripcionesComandos();
-
+    string NombreArchivo;
+    string NombreObjeto;
     string comando;
     string subComando;
 
@@ -77,33 +83,39 @@ int main() {
             } else if (args == "comando") {
                 cout << "Ingrese el comando para obtener ayuda: ";
                 getline(cin, subComando);
+                cout << subComando << endl;
                 MostrarComandoAyuda(subComando);
             } else {
                 MostrarComandoAyuda(args);
             }
         } else if (cmd == "cargarArchivo") {
-            interfaz.cargarArchivo();
+            //NombreArchivo = args;
+            interfaz.cargarArchivo(args);
         } else if (cmd == "listado") {
             interfaz.listado();
-        } else if (cmd == "envolventeObjeto") {
-            interfaz.envolventeObjeto();
+        } else if (cmd == "listadoEnvolventes") {
+            interfaz.listarObjetosEnvolventes();
+        }else if (cmd == "envolventeObjeto") {
+            interfaz.agregarEnvolventeObjeto(NombreObjeto);
         } else if (cmd == "envolvente") {
-            interfaz.envolvente();
+            interfaz.agregarEnvolventeGlobal();
         } else if (cmd == "descargar") {
-            interfaz.descargarObjeto();
+            interfaz.descargarArchivo(NombreObjeto);
         } else if (cmd == "guardarObjeto") {
-            interfaz.guardarObjeto();
-        } else if (cmd == "v_cercanoEspecifico") {
-            interfaz.verticeCercanoEspecifico();
-        } else if (cmd == "v_cercanoGeneral") {
-            interfaz.verticeCercanoGeneral();
-        } else if (cmd == "v_cercanoCaja") {
-            interfaz.verticesCercanosCaja();
-        } else if (cmd == "rutaCorta") {
-            interfaz.rutaCorta();
-        } else if (cmd == "rutaCortaCentro") {
-            interfaz.rutaCortaCentro();
-        } else if (cmd == "salir") {
+            interfaz.guardarArchivo(NombreObjeto,args);
+        } 
+        // else if (cmd == "v_cercanoEspecifico") {
+        //     interfaz.verticeCercanoEspecifico();
+        // } else if (cmd == "v_cercanoGeneral") {
+        //     interfaz.verticeCercanoGeneral();
+        // } else if (cmd == "v_cercanoCaja") {
+        //     interfaz.verticesCercanosCaja();
+        // } else if (cmd == "rutaCorta") {
+        //     interfaz.rutaCorta();
+        // } else if (cmd == "rutaCortaCentro") {
+        //     interfaz.rutaCortaCentro();
+        // }
+         else if (cmd == "salir") {
             cout << "Terminando el programa..." << endl;
         } else {
             cout << cmd << " no se reconoce como comando interno. Escriba 'ayuda' si necesita ayuda." << endl;
