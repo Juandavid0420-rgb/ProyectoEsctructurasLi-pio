@@ -56,8 +56,7 @@ int main() {
     Interfaz interfaz(objetos, envolventes, envolventeGlobal);
   
     InicializarDescripcionesComandos();
-    string NombreArchivo;
-    string NombreObjeto;
+    string NombreObjeto = "";
     string comando;
     string subComando;
 
@@ -88,14 +87,21 @@ int main() {
             } else {
                 MostrarComandoAyuda(args);
             }
-        } else if (cmd == "cargarArchivo") {
+        } else if (cmd == "Cargar") {
             //NombreArchivo = args;
+            // cout << "Ingrese el nombre del archivo: " << endl;
+            // getline(cin,Nombrearchivo);
             interfaz.cargarArchivo(args);
         } else if (cmd == "listado") {
             interfaz.listado();
         } else if (cmd == "listadoEnvolventes") {
             interfaz.listarObjetosEnvolventes();
         }else if (cmd == "envolventeObjeto") {
+            if (NombreObjeto.empty())
+            {
+                 cout << "Ingrese el nombre del objeto" << endl;
+                getline(cin, NombreObjeto);
+            }
             interfaz.agregarEnvolventeObjeto(NombreObjeto);
         } else if (cmd == "envolvente") {
             interfaz.agregarEnvolventeGlobal();
