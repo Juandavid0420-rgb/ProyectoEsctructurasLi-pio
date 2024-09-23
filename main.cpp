@@ -9,12 +9,12 @@ using namespace std;
 vector<pair<string, string>> descripcionesComandos;
 
 void InicializarDescripcionesComandos() {
-    descripcionesComandos.push_back(make_pair("cargarArchivo", "Carga la información del objeto 'nombre_objeto' desde el archivo 'nombre_archivo'."));
+    descripcionesComandos.push_back(make_pair("cargar", "Carga la información del objeto 'nombre_objeto' desde el archivo 'nombre_archivo'."));
     descripcionesComandos.push_back(make_pair("listado", "Muestra una lista de todos los objetos cargados."));
-    descripcionesComandos.push_back(make_pair("envolventeObjeto", "Muestra la envolvente convexa del objeto 'nombre_objeto'."));
+    descripcionesComandos.push_back(make_pair("envolventeOb", "Muestra la envolvente convexa del objeto 'nombre_objeto'."));
     descripcionesComandos.push_back(make_pair("envolvente", "Muestra la envolvente convexa de todos los objetos."));
     descripcionesComandos.push_back(make_pair("descargar", "Descarga el objeto especificado."));
-    descripcionesComandos.push_back(make_pair("guardarObjeto", "Guarda el objeto 'nombre_objeto' en el archivo 'nombre_archivo'."));
+    descripcionesComandos.push_back(make_pair("guardarOb", "Guarda el objeto 'nombre_objeto' en el archivo 'nombre_archivo'."));
     descripcionesComandos.push_back(make_pair("v_cercanoEspecifico", "Encuentra el vértice más cercano al punto (px, py, pz) en el objeto 'nombre_objeto'."));
     descripcionesComandos.push_back(make_pair("v_cercanoGeneral", "Encuentra el vértice más cercano al punto (px, py, pz) en todos los objetos."));
     descripcionesComandos.push_back(make_pair("v_cercanoCaja", "Encuentra los vértices más cercanos en una caja delimitadora en el objeto 'nombre_objeto'."));
@@ -87,7 +87,7 @@ int main() {
             } else {
                 MostrarComandoAyuda(args);
             }
-        } else if (cmd == "Cargar") {
+        } else if (cmd == "cargar") {
             //NombreArchivo = args;
             // cout << "Ingrese el nombre del archivo: " << endl;
             // getline(cin,Nombrearchivo);
@@ -96,7 +96,7 @@ int main() {
             interfaz.listado();
         } else if (cmd == "listadoEnvolventes") {
             interfaz.listarObjetosEnvolventes();
-        }else if (cmd == "envolventeObjeto") {
+        }else if (cmd == "envolventeOb") {
             if (NombreObjeto.empty())
             {
                  cout << "Ingrese el nombre del objeto" << endl;
@@ -104,12 +104,28 @@ int main() {
             }
             interfaz.agregarEnvolventeObjeto(NombreObjeto);
         } else if (cmd == "envolvente") {
+            if (NombreObjeto.empty())
+            {
+                 cout << "Ingrese el nombre del objeto" << endl;
+                getline(cin, NombreObjeto);
+            }
             interfaz.agregarEnvolventeGlobal();
         } else if (cmd == "descargar") {
+            if (NombreObjeto.empty())
+            {
+                 cout << "Ingrese el nombre del objeto" << endl;
+                getline(cin, NombreObjeto);
+            }
             interfaz.descargarArchivo(NombreObjeto);
-        } else if (cmd == "guardarObjeto") {
+        } else if (cmd == "guardarOb") {
+            if (NombreObjeto.empty())
+            {
+                 cout << "Ingrese el nombre del objeto" << endl;
+                getline(cin, NombreObjeto);
+            }
             interfaz.guardarArchivo(NombreObjeto,args);
         } 
+        
         // else if (cmd == "v_cercanoEspecifico") {
         //     interfaz.verticeCercanoEspecifico();
         // } else if (cmd == "v_cercanoGeneral") {
