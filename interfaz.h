@@ -46,11 +46,10 @@ public:
     void listarObjetosEnvolventes();                                         // Función para listar objetos y envolventes
     void descargarArchivo(std::string nombreObjeto);                          // Función para descargar nombre_objeto
     void guardarArchivo(std::string nombreObjeto, std::string nombreArchivo); // Función para guardar nombre_objeto nombre_archivo
-    //void verticeCercanoEspecifico();                                         // Función para v_cercano px py pz nombre_objeto
-    //void verticeCercanoGeneral();                                            // Función para v_cercano px py pz
-    //void verticesCercanosCaja();                                             // Función para v_cercanos_caja nombre_objeto
-    //void rutaCorta();                                                        // Función para ruta_corta i1 i2 nombre_objeto
-    //void rutaCortaCentro();                                                  // Función para ruta_corta_centro i1 nombre_objeto
+    // void verticeCercano();                                         // Función para v_cercano px py pz nombre_objeto
+    // void verticeCercanoCaja();                                             // Función para v_cercanos_caja nombre_objeto
+    // void rutaCorta();                                                        // Función para ruta_corta i1 i2 nombre_objeto
+    // void rutaCortaCentro();                                                  // Función para ruta_corta_centro i1 nombre_objeto
 
     // Métodos de instancia adicionales
     int posicionObjeto(std::string nombreObjeto);           // Encuentra la posición de un objeto en el vector
