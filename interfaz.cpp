@@ -1,4 +1,5 @@
 #include "interfaz.h"
+#include "unordered_map"
 
 Interfaz::Interfaz() {}
 
@@ -639,19 +640,3 @@ void Interfaz::guardarArchivo(std::string nombreObjeto,
   // Cerrar el archivo
   archivo.close();
 }
-/*
-void verticeCercano(std::string nombreObjeto)
-{
-  double px, py, pz;
-  std::string nombreObjeto;
-  std::cin >> px >> py >> pz >> nombreObjeto;
-
-  auto objeto = obtenerObjeto(nombreObjeto);
-  if (objeto == nullptr)
-  {
-    std::cout << "Error Objeto no encontrado." << std::endl;
-    return;
-  }
-  
-}
-*/

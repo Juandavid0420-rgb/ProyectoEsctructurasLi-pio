@@ -41,3 +41,4 @@ void Cara::establecerCoordenadasVertices(std::vector<Vertice> coordenadasVertice
 }
 
 
+

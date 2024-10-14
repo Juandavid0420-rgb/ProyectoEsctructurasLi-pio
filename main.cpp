@@ -2,7 +2,11 @@
 #include <vector>
 #include <string>
 #include "interfaz.h"
-
+#include <sstream>
+#include <unordered_map>
+//#include "Object3D.h"
+#include "Vertice.h"
+//#include "Componente2.h"
 using namespace std;
 
 // Vector global que almacenará pares de comandos y sus descripciones
@@ -15,7 +19,7 @@ void InicializarDescripcionesComandos()
     descripcionesComandos.push_back(make_pair("envolventeOb", "Muestra la envolvente convexa del objeto 'nombre_objeto'."));
     descripcionesComandos.push_back(make_pair("envolvente", "Muestra la envolvente convexa de todos los objetos."));
     descripcionesComandos.push_back(make_pair("descargar", "Descarga el objeto especificado."));
-    descripcionesComandos.push_back(make_pair("guardarOb", "Guarda el objeto 'nombre_objeto' en el archivo 'nombre_archivo'."));
+    descripcionesComandos.push_back(make_pair("guardar", "Guarda el objeto 'nombre_objeto' en el archivo 'nombre_archivo'."));
     descripcionesComandos.push_back(make_pair("v_cercanoEspecifico", "Encuentra el vértice más cercano al punto (px, py, pz) en el objeto 'nombre_objeto'."));
     descripcionesComandos.push_back(make_pair("v_cercanoGeneral", "Encuentra el vértice más cercano al punto (px, py, pz) en todos los objetos."));
     descripcionesComandos.push_back(make_pair("v_cercanoCaja", "Encuentra los vértices más cercanos en una caja delimitadora en el objeto 'nombre_objeto'."));
@@ -127,28 +131,34 @@ int main()
         }else if (cmd == "descargar")
         {
 
-            //  cout << "Ingrese el nombre del objeto" << endl;
-            // getline(cin, NombreObjeto);
-
             interfaz.descargarArchivo(NombreObjeto);
         }
-        else if (cmd == "guardarOb")
+        else if (cmd == "guardar")
         {
-
-            //  cout << "Ingrese el nombre del objeto" << endl;
-            // getline(cin, NombreObjeto);
 
             interfaz.guardarArchivo(NombreObjeto, args);
         }
 
-        // else if (cmd == "v_cercano")
-        // {
-        //     interfaz.verticeCercano();
+        //  else if (cmd == "v_cercano")
+        //  {
+        //     // Para v_cercano px py pz [nombre_objeto]
+        // int px, py, pz;
+        // cin >> px >> py >> pz;
+
+        // std::string nombreObjeto;
+        // if (cin >> nombreObjeto) {
+        //     // Caso con nombre_objeto
+        //     interfaz.v_Cercano(px, py, pz, nombreObjeto);
+        // } else {
+        //     // Caso sin nombre_objeto (para todos los objetos en memoria)
+        //     interfaz.v_cercano(px, py, pz);
         // }
-        // else if (cmd == "v_cercanoCaja")
-        // {
-        //     interfaz.verticeCercanoCaja();
+             
         // }
+        //  else if (cmd == "v_cercanoCaja")
+        // {
+        //      //interfaz.v_Cercano_Caja();
+        //}
         // else if (cmd == "rutaCorta")
         // {
         //     interfaz.rutaCorta();
