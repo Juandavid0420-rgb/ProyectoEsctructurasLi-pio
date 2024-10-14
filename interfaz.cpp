@@ -1,5 +1,4 @@
 #include "interfaz.h"
-#include "unordered_map"
 
 Interfaz::Interfaz() {}
 
@@ -349,6 +348,7 @@ void Interfaz::agregarEnvolventeObjeto(std::string nombreObjeto)
               << std::endl;
   }
 }
+
 Vertice Interfaz::puntoMinimoGlobal()
 {
   Vertice verticeMinimoGlobal;
@@ -639,4 +639,216 @@ void Interfaz::guardarArchivo(std::string nombreObjeto,
 
   // Cerrar el archivo
   archivo.close();
+}
+
+void Interfaz::verticeCercano(std::string coordenadas)
+{
+  // Verifica que la cadena de coordenadas no esté vacía
+  if (coordenadas.empty())
+  {
+    cout << "Error: La entrada de coordenadas está vacía." << std::endl;
+    return;
+  }
+
+  // Encuentra las posiciones de los espacios
+  size_t pos1 = coordenadas.find(' ');
+  size_t pos2 = coordenadas.find(' ', pos1 + 1);
+
+  // Asegura que haya al menos tres coordenadas
+  if (pos1 == std::string::npos || pos2 == std::string::npos)
+  {
+    cout << "Error: Se requieren tres coordenadas." << std::endl;
+    return;
+  }
+
+  // Extrae las coordenadas x, y y z
+  string x = coordenadas.substr(0, pos1);
+  string y = coordenadas.substr(pos1 + 1, pos2 - pos1 - 1);
+  string z = coordenadas.substr(pos2 + 1, coordenadas.find(' ', pos2 + 1) - pos2 - 1);
+
+  // Si hay "extra", se asegura de que haya un espacio después de z
+  string extra = coordenadas.substr(pos2 + z.length() + 1);
+  extra.erase(remove(extra.begin(), extra.end(), ' '), extra.end()); // Elimina espacios en extra
+
+  if (extra.empty())
+  {
+    std::vector<Nodo> nodos;
+    for (int i = 0; i < objetos.size(); i++)
+    {
+      vector<Vertice> vertices = this->objetos[i].obtenerCoordenadasVertices();
+      for (int j = 0; j < vertices.size(); j++)
+      {
+        Nodo Node = Nodo(vertices[j]);
+        nodos.push_back(Node);
+      }
+    }
+    KDTree tree(nodos);
+    int nX = stoi(x);
+    int nY = stoi(y);
+    int nZ = stoi(z);
+    Vertice vcercano(nX, nY, nZ);
+    Nodo vnodo(vcercano);
+    Nodo nearest = tree.nearestNeighbor(vnodo);
+    int indice = -1;
+    string nomCercano;
+
+    for (int i = 0; i < objetos.size(); i++)
+    {
+      vector<Vertice> vertices = this->objetos[i].obtenerCoordenadasVertices();
+      for (int j = 0; j < vertices.size(); j++)
+      {
+        if (vertices[j].obtenerCoordenadaX() == nearest.getX())
+        {
+          if (vertices[j].obtenerCoordenadaY() == nearest.getY())
+          {
+            if (vertices[j].obtenerCoordenadaZ() == nearest.getZ())
+            {
+              indice = j;
+              nomCercano = objetos[i].obtenerNombre();
+            }
+          }
+        }
+      }
+    }
+
+    cout << "El objeto al que pertenece el vertice mas cercano es " << nomCercano << endl
+         << " con el indice y las coordenadas son: " << indice << "(" << nearest.getX() << "," << nearest.getY() << "," << nearest.getZ() << ")" << endl
+         << " con una distancia de: " << tree.distance(nearest, vnodo);
+  }
+  else
+  {
+    for (int h = 0; h < objetos.size(); h++)
+    {
+      if (this->objetos[h].obtenerNombre() == extra)
+      {
+
+        std::vector<Nodo> nodos;
+        vector<Vertice> vertices = this->objetos[h].obtenerCoordenadasVertices();
+        for (int j = 0; j < vertices.size(); j++)
+        {
+          Nodo Node = Nodo(vertices[j]);
+          nodos.push_back(Node);
+        }
+
+        KDTree tree(nodos);
+        int nX = stoi(x);
+        int nY = stoi(y);
+        int nZ = stoi(z);
+        Vertice vcercano(nX, nY, nZ);
+        Nodo vnodo(vcercano);
+        Nodo nearest = tree.nearestNeighbor(vnodo);
+        int indice = -1;
+
+        for (int l = 0; l < vertices.size(); l++)
+        {
+          Nodo comp(vertices[l]);
+          if (vertices[l].obtenerCoordenadaX() == nearest.getX())
+          {
+            if (vertices[l].obtenerCoordenadaY() == nearest.getY())
+            {
+              if (vertices[l].obtenerCoordenadaZ() == nearest.getZ())
+              {
+                indice = l;
+              }
+            }
+          }
+        }
+        cout << "El vertice mas cercano del objeto " << extra << " es: " << endl
+             << " con el indice y los valores: " << indice << "(" << nearest.getX() << "," << nearest.getY() << "," << nearest.getZ() << ")" << endl
+             << " con una distancia de: " << tree.distance(nearest, vnodo);
+        return;
+      }
+    }
+    cout << "El objeto " << extra << " no ha sido cargado en memoria";
+  }
+}
+
+Envolvente Interfaz::obtenerEnvolvente(std::string &nombreObjeto)
+{
+  //std::cout << "Buscando el objeto: " << nombreObjeto << " en el vector de objetos" << std::endl;
+  // recorre la lista de objeto cargados
+  for (auto &objeto : objetos)
+  { // compara el nombre del objeto con le nombre que pasa el usuari
+    if (objeto.obtenerNombre() == nombreObjeto)
+    {
+      return objeto.obtenerEnvolvente();
+    }
+  }
+  // si no lo encuentra, muetra un mensaje de error y devuelve la envolvente vacia
+  std::cout << " El objeto :" << nombreObjeto << "/ no se encontro el memoria" << std::endl;
+  return Envolvente();
+}
+
+void Interfaz::verticesCercanosCaja(std::string &nombreObjeto)
+{
+  //std::cout << "Llamando a verticesCercanosCaja para el objeto: " << nombreObjeto << std::endl;
+
+  if (nombreObjeto.empty())
+  {
+    std::cout << "El objeto " << nombreObjeto << "no ha sido cargado en memoria" << std::endl;
+  }
+  else
+  {
+    // Buscamos el nombre del objeto
+    Envolvente envolvete = obtenerEnvolvente(nombreObjeto);
+    // esquinas de la envolvente
+    std::vector<Vertice> esquinas = envolvete.obtenerEsquinas();
+    // Cree un KDTree con los vertices del objeto
+    std::vector<Nodo> nodos;
+    for (auto &objeto : objetos)
+    {
+      std::vector<Vertice> vertices = objeto.obtenerCoordenadasVertices();
+      for (auto &vertice : vertices)
+      {
+        nodos.push_back(Nodo(vertice)); // crea un nodo a partir de cada vertice
+      }
+    }
+    KDTree tree(nodos); // hacemos un KDTree con los nodos
+
+    // almacenar resultados
+    std::vector<std::tuple<Vertice, Nodo, int>> resultado;
+
+    // buscamos el vertice mas cercano para cada esquina
+    for (auto &esquina : esquinas)
+    {
+      Nodo nodoEsquina(esquina);
+      Nodo verticeCercano = tree.nearestNeighbor(nodoEsquina);
+      int distancia = tree.distance(nodoEsquina, verticeCercano);
+
+      resultado.push_back(std::make_tuple(esquina, verticeCercano, distancia));
+    }
+    // resultados en formato de tabla
+    std::cout << std::left
+              << std::setw(20) << "Esquina"
+              << std::setw(25) << "Vertice Cercano"
+              << "Distancia" << std::endl;
+    std::cout << "-------------------------------------------------------------" << std::endl;
+
+    for (auto &resultado : resultado)
+    {
+      Vertice esquina = std::get<0>(resultado);
+      Nodo vertice = std::get<1>(resultado);
+      int distancia = std::get<2>(resultado);
+
+      std::cout << std::left
+                << std::setw(20) << ("(" + std::to_string(esquina.obtenerCoordenadaX()) + ", " + std::to_string(esquina.obtenerCoordenadaY()) + ", " + std::to_string(esquina.obtenerCoordenadaZ()) + ")")
+                << std::setw(25) << ("(" + std::to_string(vertice.getX()) + ", " + std::to_string(vertice.getY()) + ", " + std::to_string(vertice.getZ()) + ")")
+                << distancia << std::endl;
+    }
+    //---------------- Opcion AUXILIAR IMPRIMIR ---------------------
+    // std::cout << "Esquina\t\tVertice Cercano\t\tDistancia\n";
+    // for (auto &resultado : resultado)
+    // {
+    //   Vertice esquina = std::get<0>(resultado);
+    //   Nodo vertice = std::get<1>(resultado);
+    //   int distancia = std::get<2>(resultado);
+    //   std::cout << "(" << esquina.obtenerCoordenadaX() << ", "
+    //             << esquina.obtenerCoordenadaY() << ", "
+    //             << esquina.obtenerCoordenadaZ() << ")\t"
+    //             << "(" << vertice.getX() << ", "
+    //             << vertice.getY() << ", "
+    //             << vertice.getZ() << ")\t"
+    //             << distancia << std::endl;
+    // }
+  }
 }

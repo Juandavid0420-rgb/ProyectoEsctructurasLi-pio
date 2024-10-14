@@ -21,6 +21,7 @@ private:
     int cantidadCaras;
     std::vector<Vertice> coordenadasVertices;
     std::vector<Cara> caras;
+    
 public:
     // Metodo constructor
     Objeto();
@@ -43,6 +44,7 @@ public:
     Vertice puntoMinimo();
     Vertice puntoMaximo();
     Envolvente envolvente();
+    Envolvente obtenerEnvolvente(); 
 };
 
 

@@ -70,7 +70,6 @@ void Objeto::establecerCaras(std::vector<Cara> caras)
     this->caras = caras;
 }
 
-
 Vertice Objeto::puntoMinimo()
 {
     Vertice verticeMinimo;
@@ -98,8 +97,7 @@ Vertice Objeto::puntoMinimo()
     return verticeMinimo;
 }
 
-Vertice Objeto::puntoMaximo()
-{
+Vertice Objeto::puntoMaximo(){
     Vertice verticeMaximo;
 
     if (this->coordenadasVertices.empty())
@@ -144,3 +142,8 @@ Envolvente Objeto::envolvente()
 
     return envolvente;
 }
+
+Envolvente Objeto::obtenerEnvolvente()  {
+    return envolvente();
+}
+

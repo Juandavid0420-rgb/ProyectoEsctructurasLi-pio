@@ -15,7 +15,6 @@ private:
 public:
     // Metodo constructor
     Cara();
-    Cara(const std::vector<int>& indices) : indicesVertices(indices) {}
     // Metodos de acceso
     int obtenerCantidadAristas();
     std::vector<int> obtenerIndicesVertices();
@@ -23,9 +22,7 @@ public:
     void establecerCantidadAristas(int cantidadAristas);
     void establecerIndicesVertices(std::vector<int> indicesVertices);
     void establecerCoordenadasVertices(std::vector<Vertice> coordenadasVertices);
-  
-    
-};  
+};
 
 
 #endif //CARA_H

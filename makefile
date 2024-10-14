@@ -1,8 +1,8 @@
-OBJS   = main.o cara.o envolvente.o interfaz.o objeto.o vertice.o
+OBJS   = main.o cara.o envolvente.o interfaz.o objeto.o vertice.o KDTree.o nodo.o
 
-SOURCE = main.cpp cara.cpp envolvente.cpp interfaz.cpp objeto.cpp vertice.cpp 
+SOURCE = main.cpp cara.cpp envolvente.cpp interfaz.cpp objeto.cpp vertice.cpp KDTree.cpp nodo.cpp
 
-HEADER = cara.h envolvente.h interfaz.h objeto.h vertice.h 
+HEADER = cara.h envolvente.h interfaz.h objeto.h vertice.h KDTree.h nodo.h
 
 OUT = main
 CC = g++
@@ -29,6 +29,11 @@ objeto.o: objeto.cpp
 vertice.o: vertice.cpp
 	$(CC) $(FLAGS) vertice.cpp -o vertice.o
 
+KDTree.o: KDTree.cpp
+	$(CC) $(FLAGS) KDTree.cpp -o KDTree.o
+	
+nodo.o: nodo.cpp
+	$(CC) $(FLAGS) nodo.cpp -o nodo.o
 
 clean:
 ifeq ($(OS), Windows_NT)
