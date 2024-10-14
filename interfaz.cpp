@@ -712,8 +712,8 @@ void Interfaz::verticeCercano(std::string coordenadas)
     }
 
     cout << "El objeto al que pertenece el vertice mas cercano es " << nomCercano << endl
-         << " con el indice y las coordenadas son: " << indice << "(" << nearest.getX() << "," << nearest.getY() << "," << nearest.getZ() << ")" << endl
-         << " con una distancia de: " << tree.distance(nearest, vnodo);
+         << " con el indice y las coordenadas: " << indice << "(" << nearest.getX() << "," << nearest.getY() << "," << nearest.getZ() << ")" << endl
+         << " a una distancia de: " << tree.distance(nearest, vnodo);
   }
   else
   {
@@ -754,8 +754,8 @@ void Interfaz::verticeCercano(std::string coordenadas)
           }
         }
         cout << "El vertice mas cercano del objeto " << extra << " es: " << endl
-             << " con el indice y los valores: " << indice << "(" << nearest.getX() << "," << nearest.getY() << "," << nearest.getZ() << ")" << endl
-             << " con una distancia de: " << tree.distance(nearest, vnodo);
+             << " con el indice y las coordenadas: " << indice << "(" << nearest.getX() << "," << nearest.getY() << "," << nearest.getZ() << ")" << endl
+             << " a una distancia de: " << tree.distance(nearest, vnodo);
         return;
       }
     }
