@@ -1,5 +1,6 @@
 #include "interfaz.h"
 
+
 Interfaz::Interfaz() {}
 
 Interfaz::Interfaz(std::vector<Objeto> objetos,
@@ -765,8 +766,8 @@ void Interfaz::verticeCercano(std::string coordenadas)
 
 Envolvente Interfaz::obtenerEnvolvente(std::string &nombreObjeto)
 {
-  //std::cout << "Buscando el objeto: " << nombreObjeto << " en el vector de objetos" << std::endl;
-  // recorre la lista de objeto cargados
+  // std::cout << "Buscando el objeto: " << nombreObjeto << " en el vector de objetos" << std::endl;
+  //  recorre la lista de objeto cargados
   for (auto &objeto : objetos)
   { // compara el nombre del objeto con le nombre que pasa el usuari
     if (objeto.obtenerNombre() == nombreObjeto)
@@ -781,7 +782,7 @@ Envolvente Interfaz::obtenerEnvolvente(std::string &nombreObjeto)
 
 void Interfaz::verticesCercanosCaja(std::string &nombreObjeto)
 {
-  //std::cout << "Llamando a verticesCercanosCaja para el objeto: " << nombreObjeto << std::endl;
+  // std::cout << "Llamando a verticesCercanosCaja para el objeto: " << nombreObjeto << std::endl;
 
   if (nombreObjeto.empty())
   {
@@ -835,20 +836,115 @@ void Interfaz::verticesCercanosCaja(std::string &nombreObjeto)
                 << std::setw(25) << ("(" + std::to_string(vertice.getX()) + ", " + std::to_string(vertice.getY()) + ", " + std::to_string(vertice.getZ()) + ")")
                 << distancia << std::endl;
     }
-    //---------------- Opcion AUXILIAR IMPRIMIR ---------------------
-    // std::cout << "Esquina\t\tVertice Cercano\t\tDistancia\n";
-    // for (auto &resultado : resultado)
-    // {
-    //   Vertice esquina = std::get<0>(resultado);
-    //   Nodo vertice = std::get<1>(resultado);
-    //   int distancia = std::get<2>(resultado);
-    //   std::cout << "(" << esquina.obtenerCoordenadaX() << ", "
-    //             << esquina.obtenerCoordenadaY() << ", "
-    //             << esquina.obtenerCoordenadaZ() << ")\t"
-    //             << "(" << vertice.getX() << ", "
-    //             << vertice.getY() << ", "
-    //             << vertice.getZ() << ")\t"
-    //             << distancia << std::endl;
-    // }
   }
 }
+
+Objeto Interfaz::obtenerObjetoPorNombre(const std::string &nombreObjeto)
+{
+  for (const auto& objeto : objetos) // Recorre la lista de objetos
+    {
+        if (objeto.obtenerNombre() == nombreObjeto) // Compara el nombre
+        {
+            return objeto; // Devuelve el objeto si coincide
+        }
+    }
+    std::cerr << "Error: El objeto " << nombreObjeto << " no se encuentra en memoria." << std::endl;
+    return Objeto(); // Devuelve un objeto vacío o puedes lanzar una excepción
+
+}
+
+void Interfaz::ProbarGrafo(std::string &nombreObjeto)
+{
+  //Encuentra el objeto por nombre
+  Objeto objeto = obtenerObjetoPorNombre(nombreObjeto);
+
+  //Verificamos si el objeto tiene vertices
+  if (objeto.obtenerCantidadVertices() == 0)
+  {
+    std::cout << "Error: El objeto no tiene vertices"  << std::endl;
+    return;
+
+  }
+
+
+  grafo Grafo(objeto);
+
+  Grafo.mostrarMatrizAdyacencia();
+}
+
+void Interfaz::rutaCorta(std:: string &comando)
+ {
+   size_t pos = comando.find(' ');
+        string objeto = (pos == string::npos) ? comando : comando.substr(0, pos);
+        string origen = (pos == string::npos) ? "" : comando.substr(pos + 1);
+        string destino = (pos == string::npos) ? "" : comando.substr(pos + 2);
+        
+    Objeto objetoRC;
+    objetoRC = obtenerObjetoPorNombre(objeto);
+
+    grafo Grafo(objetoRC);
+    std::vector<int> camino = Grafo.rutaCorta(origen, destino);
+    
+
+    //distancia total
+    double dt;
+    dt=Grafo.distanciaRuta(camino);
+    //std::cout << "Camino size" <<camino.size()<<endl;
+    std::cout << "Ruta mas corta que conecta los vertices  " << camino[camino.size()-1] << " y " << destino << " del objeto "<<
+    objeto <<" pasa por: ";
+    for (int i = camino.size() - 1; i >= 0; i--){
+         std::cout << camino[i] << " - ";
+    }
+    std::cout << endl <<  "con una longitud de "<< dt ;
+}
+
+void Interfaz::rutaCortaCentro(std::string comando)
+{
+  size_t pos = comando.find(' ');
+  string indiceOrigen = (pos == string::npos) ? comando : comando.substr(0, pos);
+  string nombreObjeto = (pos == string::npos) ? "" : comando.substr(pos + 1);
+
+  Objeto objetoCe;
+  objetoCe = obtenerObjetoPorNombre(nombreObjeto);
+  grafo Grafo(objetoCe);
+  Vertice PuntoCentro= Grafo.centroide();
+  cout<<"El verctice ubicado en el centro de "<<nombreObjeto<<" es:";
+  cout<<"("<<PuntoCentro.obtenerCoordenadaX()<<","<<PuntoCentro.obtenerCoordenadaY()<<","<<PuntoCentro.obtenerCoordenadaZ()<<")";
+  vector<Vertice> puntos =objetoCe.obtenerCoordenadasVertices();
+  cout<<endl;
+
+//punto cercano al centroide
+  int puntoMinimo = 0;
+  double distanciaMinima = std::sqrt(
+    (PuntoCentro.obtenerCoordenadaX() - puntos[0].obtenerCoordenadaX()) * (PuntoCentro.obtenerCoordenadaX() - puntos[0].obtenerCoordenadaX()) +
+    (PuntoCentro.obtenerCoordenadaY() - puntos[0].obtenerCoordenadaY()) * (PuntoCentro.obtenerCoordenadaY() - puntos[0].obtenerCoordenadaY()) +
+    (PuntoCentro.obtenerCoordenadaZ() - puntos[0].obtenerCoordenadaZ()) * (PuntoCentro.obtenerCoordenadaZ() - puntos[0].obtenerCoordenadaZ()));
+
+  for (int i = 1; i < objetoCe.obtenerCantidadVertices(); i++) {
+    double dist = std::sqrt(
+      (PuntoCentro.obtenerCoordenadaX() - puntos[i].obtenerCoordenadaX()) * (PuntoCentro.obtenerCoordenadaX() - puntos[i].obtenerCoordenadaX()) +
+      (PuntoCentro.obtenerCoordenadaY() - puntos[i].obtenerCoordenadaY()) * (PuntoCentro.obtenerCoordenadaY() - puntos[i].obtenerCoordenadaY()) +
+      (PuntoCentro.obtenerCoordenadaZ() - puntos[i].obtenerCoordenadaZ()) * (PuntoCentro.obtenerCoordenadaZ() - puntos[i].obtenerCoordenadaZ()));
+    if (dist < distanciaMinima) {
+      puntoMinimo = i;
+      distanciaMinima = dist;
+    }
+  }
+  
+  std::string indiceMin=to_string(puntoMinimo);
+  std::vector<int>rutaCentro = Grafo.rutaCorta(indiceOrigen,indiceMin);
+  
+  double dt;
+  dt=Grafo.distanciaRuta(rutaCentro);
+    //std::cout << "Camino size" <<rutaCentro.size()<<endl;
+    std::cout << "La ruta mas corta que conecta el vertice " << indiceOrigen << " con el centro del objeto " << nombreObjeto 
+    << " , ubicado en ct  "<< "("<<PuntoCentro.obtenerCoordenadaX()<<","<<PuntoCentro.obtenerCoordenadaY()<<","
+    <<PuntoCentro.obtenerCoordenadaZ()<<")" <<" pasa por: ";
+    for (int i = rutaCentro.size() - 1; i >= 0; i--){
+         std::cout << rutaCentro[i] << " - ";
+    }
+    std::cout<< "ct";
+    std::cout << endl <<  "con una longitud de "<< dt+distanciaMinima ;
+
+}
+

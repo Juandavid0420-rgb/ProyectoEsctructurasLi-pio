@@ -16,9 +16,9 @@ public:
     // Metodo constructor
     Cara();
     // Metodos de acceso
-    int obtenerCantidadAristas();
-    std::vector<int> obtenerIndicesVertices();
-    std::vector<Vertice> obtenerCoordenadasVertices();
+    int obtenerCantidadAristas() const;
+    std::vector<int> obtenerIndicesVertices() const;
+    std::vector<Vertice> obtenerCoordenadasVertices() const;
     void establecerCantidadAristas(int cantidadAristas);
     void establecerIndicesVertices(std::vector<int> indicesVertices);
     void establecerCoordenadasVertices(std::vector<Vertice> coordenadasVertices);

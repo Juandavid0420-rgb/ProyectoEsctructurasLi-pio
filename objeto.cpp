@@ -1,16 +1,19 @@
-#include"objeto.h"
+#include "objeto.h"
+#include "cara.h"
+#include "vertice.h"
 
+#include <cmath>
+#include <iostream>
 // Metodos de instancia
 // Metodo constructor
 
 Objeto::Objeto()
 {
-
 }
 
-//Métodos de acceso
+// Métodos de acceso
 
-std::string Objeto::obtenerNombre() 
+std::string Objeto::obtenerNombre() const
 {
     return nombre;
 }
@@ -32,6 +35,7 @@ int Objeto::obtenerCantidadCaras()
 
 std::vector<Vertice> Objeto::obtenerCoordenadasVertices()
 {
+
     return coordenadasVertices;
 }
 
@@ -40,7 +44,7 @@ std::vector<Cara> Objeto::obtenerCaras()
     return caras;
 }
 
-void Objeto::establecerNombre(std::string& nombreObjeto)
+void Objeto::establecerNombre(std::string &nombreObjeto)
 {
     nombre = nombreObjeto;
 }
@@ -48,6 +52,7 @@ void Objeto::establecerNombre(std::string& nombreObjeto)
 void Objeto::establecerCantidadVertices(int cantidadVertices)
 {
     this->cantidadVertices = cantidadVertices;
+    // std::cout << "Cantidad de vértices cargados en Objeto: " << Objeto.cantidadVertices.size() << std::endl;
 }
 
 void Objeto::establecerCantidadAristas(int cantidadAristas)
@@ -76,14 +81,14 @@ Vertice Objeto::puntoMinimo()
 
     if (this->coordenadasVertices.empty())
     {
-        return verticeMinimo;  // Retorna un vertice con coordenadas (-1,-1,-1) si no hay vertices
+        return verticeMinimo; // Retorna un vertice con coordenadas (-1,-1,-1) si no hay vertices
     }
 
     int minX = std::numeric_limits<int>::max();
     int minY = std::numeric_limits<int>::max();
     int minZ = std::numeric_limits<int>::max();
 
-    for(int i = 0; i < this->coordenadasVertices.size(); i++)
+    for (int i = 0; i < this->coordenadasVertices.size(); i++)
     {
         minX = std::min(minX, this->coordenadasVertices[i].obtenerCoordenadaX());
         minY = std::min(minY, this->coordenadasVertices[i].obtenerCoordenadaY());
@@ -97,19 +102,20 @@ Vertice Objeto::puntoMinimo()
     return verticeMinimo;
 }
 
-Vertice Objeto::puntoMaximo(){
+Vertice Objeto::puntoMaximo()
+{
     Vertice verticeMaximo;
 
     if (this->coordenadasVertices.empty())
     {
-        return verticeMaximo;  // Retorna un vertice con coordenadas (-1,-1,-1) si no hay vertices
+        return verticeMaximo; // Retorna un vertice con coordenadas (-1,-1,-1) si no hay vertices
     }
 
     int maxX = std::numeric_limits<int>::min();
     int maxY = std::numeric_limits<int>::min();
     int maxZ = std::numeric_limits<int>::min();
 
-    for(int i = 0; i < this->coordenadasVertices.size(); i++)
+    for (int i = 0; i < this->coordenadasVertices.size(); i++)
     {
         maxX = std::max(maxX, this->coordenadasVertices[i].obtenerCoordenadaX());
         maxY = std::max(maxY, this->coordenadasVertices[i].obtenerCoordenadaY());
@@ -127,7 +133,7 @@ Envolvente Objeto::envolvente()
 {
     Envolvente envolvente;
 
-    if(puntoMinimo().obtenerCoordenadaX() < 0 || puntoMaximo().obtenerCoordenadaX() < 0)
+    if (puntoMinimo().obtenerCoordenadaX() < 0 || puntoMaximo().obtenerCoordenadaX() < 0)
     {
         return envolvente;
     }
@@ -143,7 +149,39 @@ Envolvente Objeto::envolvente()
     return envolvente;
 }
 
-Envolvente Objeto::obtenerEnvolvente()  {
+Envolvente Objeto::obtenerEnvolvente()
+{
     return envolvente();
 }
 
+std::vector<std::pair<int, int>> Objeto::obtenerConexiones()
+{
+    std::vector<std::pair<int, int>> conexiones;
+
+    // Recorre cada cara
+    for (const auto &cara : caras)
+    {
+        std::vector<int> indicesVertices = cara.obtenerIndicesVertices();
+        size_t numVertices = indicesVertices.size();
+
+        // Para cada vértice en la cara
+        for (size_t i = 0; i < numVertices; ++i)
+        {
+            int actual = indicesVertices[i];
+            int siguiente = indicesVertices[(i + 1) % numVertices];              // Conexión circular al siguiente
+            int anterior = indicesVertices[(i + numVertices - 1) % numVertices]; // Conexión circular al anterior
+
+            // Añadir conexiones
+            conexiones.push_back({actual, siguiente});
+            conexiones.push_back({actual, anterior});
+        }
+    }
+    return conexiones;
+}
+
+
+double Objeto::distancia(int a, int b){
+    return std::sqrt((coordenadasVertices[a].obtenerCoordenadaX() - coordenadasVertices[b].obtenerCoordenadaX()) * (coordenadasVertices[a].obtenerCoordenadaX() - coordenadasVertices[b].obtenerCoordenadaX()) +
+                     (coordenadasVertices[a].obtenerCoordenadaY() - coordenadasVertices[b].obtenerCoordenadaY()) * (coordenadasVertices[a].obtenerCoordenadaY() - coordenadasVertices[b].obtenerCoordenadaY()) +
+                     (coordenadasVertices[a].obtenerCoordenadaZ() - coordenadasVertices[b].obtenerCoordenadaZ()) * (coordenadasVertices[a].obtenerCoordenadaZ() - coordenadasVertices[b].obtenerCoordenadaZ()));
+};

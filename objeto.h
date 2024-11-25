@@ -28,7 +28,7 @@ public:
 
 
     // Metodos de acceso
-    std::string obtenerNombre();
+    std::string obtenerNombre() const;
     int obtenerCantidadVertices();
     int obtenerCantidadAristas();
     int obtenerCantidadCaras();
@@ -45,6 +45,8 @@ public:
     Vertice puntoMaximo();
     Envolvente envolvente();
     Envolvente obtenerEnvolvente(); 
+    std::vector<std::pair<int,int>> obtenerConexiones(); //obtener conexiones
+    double distancia(int a, int b);
 };
 
 

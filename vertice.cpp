@@ -47,3 +47,11 @@ void Vertice::establecerCoordenadaZ(int coordenadaZ)
 {
     this->coordenadaZ = coordenadaZ;
 }
+
+bool Vertice::esIgual(const Vertice& otroVertice)
+{
+    return (this->coordenadaX == otroVertice.coordenadaX &&
+            this->coordenadaY == otroVertice.coordenadaY &&
+            this->coordenadaZ == otroVertice.coordenadaZ);
+}
+

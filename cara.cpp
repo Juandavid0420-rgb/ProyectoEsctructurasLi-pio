@@ -10,17 +10,17 @@ Cara::Cara()
 
 //Métodos de acceso
 
-int Cara::obtenerCantidadAristas()
+int Cara::obtenerCantidadAristas() const
 {
     return cantidadAristas;
 }
 
-std::vector<int> Cara::obtenerIndicesVertices()
+std::vector<int> Cara::obtenerIndicesVertices() const
 {
     return indicesVertices;
 }
 
-std::vector<Vertice> Cara::obtenerCoordenadasVertices()
+std::vector<Vertice> Cara::obtenerCoordenadasVertices() const
 {
     return coordenadasVertices;
 }

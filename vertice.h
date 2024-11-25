@@ -18,6 +18,8 @@ public:
     void establecerCoordenadaX(int coordenadaX);
     void establecerCoordenadaY(int coordenadaY);
     void establecerCoordenadaZ(int coordenadaZ);
+    //Metodo de Comparacion
+    bool esIgual(const Vertice& otroVertice);
 };
 
 
